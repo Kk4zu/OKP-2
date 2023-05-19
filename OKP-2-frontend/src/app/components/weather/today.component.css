@@ -1,16 +1,21 @@
+.weather-frame {
+  position: relative;
+  z-index: 9999;
+  padding-top: 40px;
+}
+
+.weather-container {
+  background-color: hsl(200, 100%, 85%);
+  width: 100%;
+}
 
 .weather-container *{
-  background-color: hsl(200, 100%, 85%);
-  max-width: 100%;
   max-height: 5rem;
   font-size: small;
   display: flex;
   padding: 0.3rem 0.5rem;
-}
-
-
-.temp {
-
+  justify-content: center;
+  align-items: center;
 }
 
 img {
@@ -18,6 +23,41 @@ img {
   max-height: 50%;
 }
 
-.forecast {
+h6.temp {
+  margin: 0;
+}
 
+/* Media query for mobile devices */
+@media screen and (max-width: 425px) {
+  .weather-container {
+    padding: 0.3rem 0.3rem 0.3rem 0.6rem;
+  }
+  .weather-container * {
+    font-size: x-small;
+    max-height: 4rem;
+    padding: 0;
+  }
+
+  img {
+    max-width: 40%;
+    max-height: 40%;
+  }
+
+  .image {
+    max-width: 30%;
+    max-height: 30%;
+  }
+
+  .mobile-wrapper {
+    flex-wrap: wrap;
+  }
+
+  .hr-time, .hr-temp {
+    display: block;
+  }
+  .hr-time {
+    margin-right: 0.2rem;
+  }
+
+ 
 }

@@ -8,21 +8,37 @@ public partial class PostgresContext : DbContext
 {
     public PostgresContext()
     {
+        this.Host = Environment.GetEnvironmentVariable("PGHOST") ?? "locahost";
+        this.Port = Environment.GetEnvironmentVariable("PGPORT") ?? "5000";
+        this.Db = Environment.GetEnvironmentVariable("PGDATABASE") ?? "postgres";
+        this.Username = Environment.GetEnvironmentVariable("PGUSER") ?? "postgres";
+        this.Password = Environment.GetEnvironmentVariable("PGPASSWORD") ?? "postgres";
     }
 
     public PostgresContext(DbContextOptions<PostgresContext> options)
         : base(options)
     {
+        this.Host = Environment.GetEnvironmentVariable("PGHOST") ?? "locahost";
+        this.Port = Environment.GetEnvironmentVariable("PGPORT") ?? "5000";
+        this.Db = Environment.GetEnvironmentVariable("PGDATABASE") ?? "postgres";
+        this.Username = Environment.GetEnvironmentVariable("PGUSER") ?? "postgres";
+        this.Password = Environment.GetEnvironmentVariable("PGPASSWORD") ?? "postgres";
     }
 
     public virtual DbSet<Favorite> Favorites { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
+    public string Host { get; set; }
+    public string Port { get; set; }
+    public string Db { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        optionsBuilder.UseNpgsql("Host=db; Database=postgres; Username=postgres; Password=postgres", builder =>
+        optionsBuilder.UseNpgsql($"Host={this.Host}:{this.Port}; Database={this.Db}; Username={this.Username}; Password={this.Password}", builder =>
         {
             builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
         });
@@ -40,7 +56,7 @@ public partial class PostgresContext : DbContext
                 .HasMaxLength(16)
                 .HasColumnName("user");
             entity.Property(e => e.Id)
-                .HasMaxLength(32)
+                .HasMaxLength(64)
                 .HasColumnName("id");
             entity.Property(e => e.Type)
                 .HasMaxLength(16)

@@ -1,39 +1,32 @@
-import { Component } from '@angular/core';
-import { faLandmark, faMasksTheater, faPersonBiking } from '@fortawesome/free-solid-svg-icons';
-import { SharedService } from 'src/app/services/shared.service';
-
+import { Component, HostListener } from '@angular/core';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faBars, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent {
-  faLandmark = faLandmark; 
-  faPersonBiking = faPersonBiking;
-  faMasksTheater = faMasksTheater;
+  faMapLocationDot = faMapLocationDot;
+  faGithub = faGithub;
+  showFooter: boolean = false;
 
-  placesStatus = "block";
-  activitiesStatus = "none";
-  eventsStatus = "none";
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    // Check if the user has scrolled to the bottom of the page
+    const scrollPosition =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+    const windowHeight =
+      window.innerHeight ||
+      document.documentElement.clientHeight ||
+      document.body.clientHeight ||
+      0;
+    const documentHeight =
+      document.documentElement.scrollHeight || document.body.scrollHeight || 0;
 
-  constructor(private sharedService: SharedService) {}
-
-  public clickHandler(label: string) {
-    switch (label) {
-      case "places":
-        this.sharedService.setCurrentCase('places');
-        break;
-
-      case "activities":
-        this.sharedService.setCurrentCase('activities');
-        break;
-
-      case "events":
-        this.sharedService.setCurrentCase('events');
-        break;
-    
-      default:
-        break;
-    }
+    this.showFooter = scrollPosition + windowHeight >= documentHeight;
   }
 }

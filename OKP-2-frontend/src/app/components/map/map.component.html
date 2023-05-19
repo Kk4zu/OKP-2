@@ -1,19 +1,29 @@
+<section class="map-container">
+
+<input
+    id="search"
+    type="text"
+    #search
+    placeholder="Vapaa sijaintihaku..."
+/>
+
 <google-map
-  [zoom]="zoom"
-  [center]="center"
-  [options]="options"
-  [height]="height"
-  [width]="width">
+  [zoom]="dataService.zoom"
+  [center]="dataService.pan"
+  [options]="dataService.options"
+  [height]="dataService.height"
+  [width]="dataService.width">
 
 <map-marker #userLocationMarker *ngIf="userCurrentLocation"
-  [position]="center"
+  [position]="dataService.center"
   [options]="userMarkerOptions"
-  [title]="userTitle">
+  [title]="userTitle"
+  (mapDragend)="onMarkerDragEnd($event)">
 </map-marker>
 
 <div *ngIf="showActivitiesMarkers">
 <map-marker #activityMarker="mapMarker"
-  *ngFor="let activity of dataService.activityLocations; let i = index"
+  *ngFor="let activity of dataService.activityMarkerInfo; let i = index"
   [position]="activity.position"
   [options]="activityMarkerOptions"
   [title]="activity.name"
@@ -23,7 +33,7 @@
 
 <div *ngIf="showEventsMarkers">
 <map-marker #eventMarker="mapMarker"
-  *ngFor="let event of dataService.eventLocations; let i = index"
+  *ngFor="let event of dataService.eventMarkerInfo; let i = index"
   [position]="event.position"
   [options]="eventMarkerOptions"
   [title]="event.name"
@@ -33,7 +43,7 @@
 
 <div *ngIf="showPlacesMarkers">
 <map-marker #placeMarker="mapMarker"
-  *ngFor="let place of dataService.placeLocations; let i = index"
+  *ngFor="let place of dataService.placeMarkerInfo; let i = index"
   [position]="place.position"
   [options]="placeMarkerOptions"
   [title]="place.name"
@@ -43,16 +53,18 @@
 
 <map-info-window #infoWindow="mapInfoWindow"
   [options]="infoWindowOptions">
-  <div class="container" *ngIf="selectedMarker">
-    <h4>{{ selectedMarker.name }}</h4>
+  <div class="info-container" *ngIf="selectedMarker">
     <article class="text">
-      <img src="{{ selectedMarker.image }}" alt="">
-      <p>{{ selectedMarker.about }}</p>
-      <p class="address">{{ selectedMarker.address.street_address }}, {{ selectedMarker.address.postal_code }}, {{ selectedMarker.address.city }}</p>
-      <a href="{{ selectedMarker.url }}">Kotisivu</a>
-      <p class="tags">Avainsanat: {{ selectedMarker.tags.join(', ') }}</p>
+      <p class="info-header">{{ selectedMarker.name }}</p>
+      <!--<p class="about">{{ selectedMarker.about }}</p>-->
+      <p class="address">{{ selectedMarker.address.street_address }}, {{ selectedMarker.address.postal_code }} {{ selectedMarker.address.city }}</p>
+      <!--<a class="link" href="{{ selectedMarker.url }}">Kotisivu</a>-->
     </article>
+    <div *ngFor="let tag of selectedMarker.tags" class="badge bg-info">{{ tag }}</div>
+    <!--<figure><img src="{{ selectedMarker.image }}" alt="photo"></figure>-->
   </div>
 </map-info-window>
 
 </google-map>
+
+</section>

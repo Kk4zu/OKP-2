@@ -1,8 +1,11 @@
+<section class="weather-frame">
+
 <div class="weather-container">
     <div *ngIf="weatherNow">
+        
         <div class="time">{{ currentTime | date:'HH:mm': 'UTC+3'}} {{ location.name }}</div>
             <div class="temp">
-            <span><img src="assets/images/{{ weatherNow.weather[0].icon }}.png" alt="icon"></span>
+            <img class="image" src="assets/images/{{ weatherNow.weather[0].icon }}.png" alt="icon">
             <h6 class="temp">{{ weatherNow.main.temp | number:'1.0-0'}} °C</h6>
             Tuulen nopeus {{ weatherNow.wind.speed | number:'1.0-0'}}m/s.</div>
 
@@ -11,10 +14,14 @@
         <div class="forecast">
             <div *ngFor="let item of timeline">
                 <img src="assets/images/{{ weatherNow.weather[0].icon }}.png" alt="icon">
-                <div>{{ item.time | date:'HH:mm':'UTC+6' }}</div>
-                <div>{{ item.temp | number:'1.0-0' }} °C</div>
+                <div class="mobile-wrapper">
+                <div class="hr-time">{{ item.time | date:'HH:mm':'UTC+6' }}</div>
+                <div class="hr-temp">{{ item.temp | number:'1.0-0' }} °C</div>
+                </div>
                 <div>{{ weatherNow.weather.id }} </div>
             </div>
         </div>
     </div>
 </div>
+
+</section>

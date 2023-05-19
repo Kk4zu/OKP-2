@@ -1,3 +1,4 @@
+<section class="register-container">
 <!-- Section: Design Block -->
 <section class="text-center">
     <!-- Background image -->
@@ -13,11 +14,11 @@
           backdrop-filter: blur(30px);
           ">
         <div class="card-body py-5 px-md-5">
-
+            <button routerLink="/home" type="button" class="btn-close position-absolute top-0 end-0 m-3" aria-label="Sulje"></button>
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
                     <h2 class="fw-bold mb-5">Luo käyttäjätili</h2>
-                    <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+                    <form [formGroup]="signupForm" (ngSubmit)="onSignup()" autocomplete="off">
                         <!-- Username input -->
                         <div class="form-outline mb-4">
                             <input type="text" class="form-control" id="username" formControlName="Name" />
@@ -39,4 +40,5 @@
             </div>
         </div>
     </div>
+</section>
 </section>

@@ -1,36 +1,73 @@
-.container {
-  padding: 0.2rem 0.5rem 0 0.5rem;
+.map-container {
+  padding-top: 40px;
+  position: fixed;
+  z-index: 9998;
+  height: 300px;
+  width: 100%;
 }
 
-h4 {
-  margin: 0.5rem 0 0 0;
+/* map marker info window starts */
+
+.info-container {
+  padding: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.about, .address, .link, .tags {
+  padding-top: 0.6rem;
+}
+
+.text {
+  margin: 0.2rem 0.2rem 0.6rem 0.2rem;
+}
+
+.info-header {
   font-weight: bold;
 }
-  
-.address {
-  font-weight: bold;
-}
-  
+
 img {
   height: auto;
-  max-width: 200px;
+  max-width: 100px;
   float: none;
-  padding: 0 0 1rem 0;
+  padding: 1rem 0;
 }
   
 .tags {
   font-style: italic;
-  margin-top: 1rem;
 }
 
-.text {
-   margin-top: 1rem;
+.badge {
+  margin: 0.1rem;
+  color: #000;
+}
+
+/* map marker info window ends */
+
+#search {
+  width: 70%;
+  height: 30px;
+  font-size: 0.8rem;
+
+  border: 1px solid #000;
+  padding: 5px 5px;
+  border-radius: 2px;
+
 }
 
 @media only screen and (min-width: 768px) {
   /* Tablet and bigger: */
+
+  /* marker-info image (if used) */
   img {
     float: right;
     padding: 0 0 0.5rem 0.5rem;
   }
+
+  #search {
+    width: 20%;
+  }
+
 }

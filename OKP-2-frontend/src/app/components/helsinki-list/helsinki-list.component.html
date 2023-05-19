@@ -1,9 +1,12 @@
+<section class="list-container container">
 <div class="frame">
     <!-- Paikat lista -->
     <section *ngIf="(selection | async) == 'places'">
         <h3>Paikat</h3>
-        <app-helsinki-list-item *ngFor="let place of dataService.places; index as i" [data]="place"
-            [type]="'Places'"></app-helsinki-list-item>
+            <app-helsinki-list-item *ngFor="let place of dataService.favoritePlaces; index as i" [favorite]="true" [data]="place"
+            [type]="'Place'"></app-helsinki-list-item>
+        <app-helsinki-list-item *ngFor="let place of dataService.places; index as i" [favorite]="false" [data]="place"
+            [type]="'Place'"></app-helsinki-list-item>
         <div *ngIf="!dataService.places || dataService.places.length === 0">
             Emme löytäneet paikkoja läheltäsi.
         </div>
@@ -11,8 +14,10 @@
     <!-- Aktiviteetit lista -->
     <section *ngIf="(selection | async) == 'activities'">
         <h3>Aktiviteetit</h3>
-        <app-helsinki-list-item *ngFor="let activity of dataService.activities; index as i" [data]="activity"
-            [type]="'Activities'"></app-helsinki-list-item>
+        <app-helsinki-list-item *ngFor="let activity of dataService.favoriteActivities; index as i" [favorite]="true" [data]="activity"
+            [type]="'Activity'"></app-helsinki-list-item>
+        <app-helsinki-list-item *ngFor="let activity of dataService.activities; index as i" [favorite]="false" [data]="activity"
+            [type]="'Activity'"></app-helsinki-list-item>
         <div *ngIf="!dataService.activities || dataService.activities.length === 0">
             Emme löytäneet paikkoja läheltäsi.
         </div>
@@ -20,10 +25,13 @@
     <!-- Tapahtumat lista -->
     <section *ngIf="(selection | async) == 'events'">
         <h3>Tapahtumat</h3>
-        <app-helsinki-list-item *ngFor="let event of dataService.events; index as i" [data]="event"
-            [type]="'Events'"></app-helsinki-list-item>
+        <app-helsinki-list-item *ngFor="let event of dataService.favoriteEvents; index as i" [favorite]="true" [data]="event"
+            [type]="'Event'"></app-helsinki-list-item>
+        <app-helsinki-list-item *ngFor="let event of dataService.events; index as i" [favorite]="false" [data]="event"
+            [type]="'Event'"></app-helsinki-list-item>
         <div *ngIf="!dataService.events || dataService.events.length === 0">
             Emme löytäneet paikkoja läheltäsi.
         </div>
     </section>
 </div>
+</section>

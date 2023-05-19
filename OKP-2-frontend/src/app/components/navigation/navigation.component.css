@@ -1,0 +1,58 @@
+.navigation-bar {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    background-color: #4581b6;
+    color: white;
+    display: flex;
+    font-weight: lighter;
+  }
+  
+  .navigation-bar .bar-button label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .content {
+    display: none;
+    border: none;
+  }
+  
+  .navigation-container input {
+    display: none;
+  }
+  
+  .navigation-container label {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+  }
+  
+  .navigation-container label:before {
+    font-family: fontawesome;
+    font-weight: normal;
+  }
+  
+  .navigation-container label:hover {
+    color: #e0e0e0;
+    cursor: pointer;
+  }
+  
+  .navigation-container input:checked + label {
+    filter: drop-shadow(0 0 6px #e2e2e2);
+  }
+
+  .bar-button {
+    padding: 0.5rem 0.5rem 0.2rem 0.5rem;
+  }
+
+  .navigation-container {
+    padding-top: 340px;
+    position: fixed;
+    z-index: 9997;
+    width: 100%;
+  }
+
+  

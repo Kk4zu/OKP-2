@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 
 interface IJWT {
     nameid: string;
@@ -14,6 +14,11 @@ export class AccountService {
     baseUrl = environment.apiUrl;
 
     constructor(private http: HttpClient) { }
+
+    isLoggedIn() {
+    const token = this.getToken(); // Retrieve the JWT token
+    return !!token;
+    }
 
     signup(formData: FormData) {
         return this.http.post(this.baseUrl + 'signup', formData);

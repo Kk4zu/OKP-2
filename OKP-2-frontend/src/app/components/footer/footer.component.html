@@ -1,23 +1,24 @@
-<section class="footer-container">
-  <div class="footer-bar">
-    <div class="bar-button">
-      <input class="button" id="tab-1" type="radio" name="tabs" (click)="clickHandler('places')" checked />
-      <label for="tab-1" ><fa-icon [icon]="faLandmark" size="xl" />Paikat</label>
-    </div>
-
-    <div class="bar-button">
-      <input class="button" id="tab-2" type="radio" name="tabs" (click)="clickHandler('activities')" />
-      <label for="tab-2"><fa-icon [icon]="faPersonBiking" size="xl" />Aktiviteetit</label>
-    </div>
-
-    <div class="bar-button">
-      <input class="button" id="tab-3" type="radio" name="tabs" (click)="clickHandler('events')"/>
-      <label for="tab-3"><fa-icon [icon]="faMasksTheater" size="xl" />Tapahtumat</label>
-    </div>
+<footer
+  class="footer-container text-center"
+  [ngClass]="{ 'show-footer': showFooter }"
+>
+  <div class="logo-container">
+    <h4>
+      <fa-icon class="logo" [icon]="faMapLocationDot"></fa-icon>MAPPi
+    </h4>
+    <p>
+      This MAPPi uses MyHelsinki Open API for activities, events and places in
+      Helsinki city.
+    </p>
+    <p>Code source can be found in Github below.</p>
   </div>
-
-  <section class="container">
-    <app-helsinki-list class="content" id="content-3" [ngStyle]="{display: placesStatus}"></app-helsinki-list>
-  </section>
-
-</section>
+  <div>
+    <a
+      class="github-logo"
+      href="https://github.com/vhlahti/OKP-2"
+      target="_blank"
+    >
+      <fa-icon [icon]="faGithub" />
+    </a>
+  </div>
+</footer>

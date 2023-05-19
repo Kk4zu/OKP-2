@@ -1,8 +1,23 @@
-<div class="card py-3 my-4">
-    <div class="card-body">
-        <h4 class="card-title">{{ helsinkiService.getName(data, type) }}</h4>
-        <p class="card-text">{{ helsinkiService.getDescription(data, type) }}</p>
-        <a href="#" class="btn btn-primary me-1">Näytä kartalla</a>
-        <a *ngIf="helsinkiService.hasLink(data, type)" href="{{ helsinkiService.getLink(data, type) }}" class="btn btn-primary" target="_blank">Kotisivut</a>
+<div class="card shadow border-dark my-4">
+    <div class="d-flex gap-2 align-items-center card-header card-header-name ">
+        <fa-icon *ngIf="this.accountService.isLoggedIn()" [ngClass]="favorite ? 'text-warning' : 'text-white'" (click)="toggleFavorite()" [icon]="faStar" size="xl"></fa-icon>
+        <h5 class="text-white m-0"> {{ helsinkiService.getName(data, type) }} </h5>
+    </div>
+    <div class="address">
+        <p *ngFor="let item of helsinkiService.getAddress(data, type)">
+        {{ item.street_address }}, {{ item.postal_code }} {{ item.city }}
+        </p>
+    </div>
+
+    <div class="card-body d-flex">   
+        
+        <a class=”info”><p><fa-icon [icon]="faCircleInfo" size="xl"></fa-icon><button style="border-style: none;" (click) = "showText()" class="btn-info bs-linebreak">Lisätietoja &#9660; </button></a>
+            <span><div *ngIf="textShow"><p>{{ helsinkiService.getDescription(data, type) }}</p>
+                <a *ngIf="helsinkiService.hasLink(data, type)" href="{{ helsinkiService.getLink(data, type) }}" class="btn-homepg" target="_blank">Yrityksen kotisivut</a>
+                <br>
+                <button style="border-style: none;" (click) = "hideText()" class="btn-hide">Piilota</button></div></span>
+                
+        <a class="location"><fa-icon [icon]="faLocationDot" size="xl"></fa-icon><button style="border-style: none;" class="btn-location" (click)="showOnMap()">Sijainti kartalla</button></a>
+
     </div>
 </div>

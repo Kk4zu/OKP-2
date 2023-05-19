@@ -1,23 +1,47 @@
-.btn {
+.header-container {
+  background-color: #4581b6;
   color: white;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  z-index: 10000;
+  height: 40px;
 }
+
+.logo-container {
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+h4 {
+  margin: 0;
+  cursor: pointer;
+}
+
+.logo {
+  margin: 0 0.5rem 0 0.5rem;
+}
+
 .dropdownmenu a:before {
   font-family: fontawesome;
   font-weight: normal;
 }
 .dropdownmenu a:hover {
-  color: #e0e0e0;
+  box-shadow: 0 0 5px 2px #ddd;
   cursor: pointer;
 }
-.dropdownmenu a:checked {
-  filter: drop-shadow(0 0 6px #e2e2e2);
+
+.btn {
+  color: white;
 }
-h4 {
-  margin: 0;
+
+.text-user {
+  margin: 0.3rem 1rem 0.5rem 1rem;
+  cursor: default;
 }
-.logo-container {
-  margin: 0.5rem 0 0.5rem 0;
+
+hr {
+  margin: 0.8rem 0 0 0;
 }
-.logo {
-  margin-right: 0.5rem;
-}
+

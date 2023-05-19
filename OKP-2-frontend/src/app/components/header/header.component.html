@@ -1,14 +1,16 @@
 <section class="header-container">
     <div class="logo-container">
-        <h4><fa-icon class="logo" [icon]="faMapLocationDot"></fa-icon>MAPPi</h4>
+        <h4 routerLink="/home"><fa-icon class="logo" [icon]="faMapLocationDot"></fa-icon>MAPPi</h4>
     </div>
     <div class="d-flex dropdownmenu align-items-center">
-        <div *ngIf="accountService.getUsername()">User: {{ accountService.getUsername() }}</div>
         <div class="button-user">
             <a class="btn" data-bs-toggle="dropdown"><fa-icon [icon]="faUser" size="xl"></fa-icon>
                 <ul class="dropdown-menu">
                     <li *ngIf="!accountService.getUsername()"><a class="dropdown-item" routerLink="/kirjaudu">Kirjaudu sisään</a></li>
                     <li *ngIf="!accountService.getUsername()"><a class="dropdown-item" routerLink="/rekisteroidy">Luo uusi käyttäjä</a></li>
+                    <li class="text-user" *ngIf="accountService.getUsername()">Käyttäjä: <strong>{{ accountService.getUsername() }}</strong>
+                        <hr>
+                    </li>
                     <li *ngIf="accountService.getUsername()" (click)="logout()"><a class="dropdown-item" routerLink="/">Kirjaudu ulos</a></li>
                 </ul>
             </a>

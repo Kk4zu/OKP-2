@@ -1,0 +1,52 @@
+.card-header-name {
+    background-color: #4581b6;
+}
+
+.address {
+    padding: 1rem 0 0 1rem;
+}
+
+.opening-hours {
+    padding: 1rem 0 0 1rem;
+    margin-top: -2rem;
+}
+
+.card-body {
+    margin-top: -1rem;
+}
+
+.ng-fa-icon{
+    color: #06a6c6;
+}
+
+.btn-info {
+    font-weight: bold;
+    background-color: transparent;
+    padding-right: 1rem;
+}
+
+a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #0BCAF0
+}
+
+.btn-hide {
+    font-weight: bold;
+    background-color: transparent;
+    padding-top: 0.5rem;
+    margin-left: -0.5rem;
+}
+
+.location {
+    color: #06a6c6;
+}
+
+.btn-location {
+    font-weight: bold;
+    background-color: transparent;
+}
+
+span::before { 
+    content: '\A'; white-space: pre;
+}

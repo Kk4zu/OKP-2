@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { environment } from 'src/environments/environment.development';
-import { APIResponse } from 'src/app/models/IApiResponse';
+import { ApiTypes, APIFavoritesResponse, APIResponse } from 'src/app/models/IApiResponse';
 import { ActivityV2 } from 'src/app/models/helsinki-api-model';
 import { Event } from 'src/app/models/helsinki-api-model';
 import { PlaceV2 } from 'src/app/models/helsinki-api-model';
 import { ILocation } from 'src/app/models/ILocation';
+import { GoogleMap } from '@angular/google-maps';
+import { AccountService } from './account.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,25 +17,45 @@ import { ILocation } from 'src/app/models/ILocation';
 export class DataService {
 
   activities: ActivityV2[] = [];
-  activityLocations: ILocation[] = [];
+  favoriteActivities: ActivityV2[] = [];
+  activityMarkerInfo: ILocation[] = [];
   events: Event[] = [];
-  eventLocations: ILocation[] = [];
+  favoriteEvents: Event[] = [];
+  eventMarkerInfo: ILocation[] = [];
   places: PlaceV2[] = [];
-  placeLocations: ILocation[] = [];
+  favoritePlaces: PlaceV2[] = [];
+  placeMarkerInfo: ILocation[] = [];
+  public map: GoogleMap;
 
-  constructor(private http: HttpClient) { }
+  // google maps settings
+  zoom = 15;
+  height = '300px';
+  width = '100%';
+  pan: google.maps.LatLngLiteral; // point of view
+  center: google.maps.LatLngLiteral; // user location (marker)
+  options: google.maps.MapOptions = {
+    center: { lat: 60.172727, lng: 24.939491 },
+    maxZoom: 20,
+    minZoom: 10,
+    disableDefaultUI: true,
+    fullscreenControl: true,
+    zoomControl: true,
+    gestureHandling: 'greedy'
+  };
+
+  constructor(private http: HttpClient, private accountService: AccountService) { }
 
   // filter settings
 
   lat: number;
   lng: number;
-  distance = 0.5; // distance radius from user location
+  distance = 5; // distance radius from user location
   limit = 50; // limits shown results. use: &limit=${this.limit}
 
   apiUrl = environment.apiUrl;
  
   // update default location with chosen coordinates
-  updateUserLocation(newLat: number, newLng: number) {
+  updateUserLocationForApiDataGet(newLat: number, newLng: number) {
     this.lat = newLat;
     this.lng = newLng;
   }
@@ -58,6 +80,56 @@ export class DataService {
     return this.http.get(this.apiUrl + "places" + this.filterPath())
   }
 
+  getFavorites() {
+    const token = this.accountService.getToken();
+    const headers = new HttpHeaders({
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+    });
+
+    return this.http.post(this.apiUrl + "favorites", null, { headers })
+  }
+
+  addFavorite(type: ApiTypes, id: string) {
+    const token = this.accountService.getToken();
+    const headers = new HttpHeaders({
+        "Authorization": `Bearer ${token}`,
+    });
+
+    const formData = new FormData();
+    formData.append('Type', type.toLowerCase());
+    formData.append('Id', id);
+
+    console.log(`Adding new favorite (type: ${type}, id: ${id})`)
+
+    return this.http.post(this.apiUrl + "favorite", formData, { headers })
+  }
+
+  removeFavorite(type: ApiTypes, id: string) {
+    const token = this.accountService.getToken();
+    const headers = new HttpHeaders({
+        "Authorization": `Bearer ${token}`,
+    });
+
+    const formData = new FormData();
+    formData.append('Type', type.toLowerCase());
+    formData.append('Id', id);
+
+    console.log(`Removing favorite (type: ${type}, id: ${id})`)
+
+    return this.http.post(this.apiUrl + "unfavorite", formData, { headers })
+  }
+
+  getFavoritesData() {
+    this.getFavorites().subscribe((res: APIFavoritesResponse) => {
+        console.log("Favorites");
+        console.log(res.favorites);
+        this.favoriteEvents = res.favorites.events.map(event => JSON.parse(event));
+        this.favoriteActivities = res.favorites.activities.map(activity => JSON.parse(activity));
+        this.favoritePlaces = res.favorites.places.map(place => JSON.parse(place));
+    });
+  }
+
   getActivitiesData() {
     this.getActivities().subscribe((res: APIResponse) => {
         let result = JSON.parse(res.data.result);
@@ -65,6 +137,8 @@ export class DataService {
         console.log("Activities");
         console.log(this.activities);
 
+        // clear old marker info on marker drag end
+        this.activityMarkerInfo.splice(0, this.activityMarkerInfo.length);
         // filter results and push selected data to additional array
         for (const activity of this.activities) {
             const { lat, long } = activity.address?.location ?? {};
@@ -74,7 +148,7 @@ export class DataService {
             const url = activity.storeUrl;
             const about = activity.descriptions["fi"]?.description ?? activity.descriptions["en"]?.description;
             const tags = activity.tags;
-            this.activityLocations.push({
+            this.activityMarkerInfo.push({
               position: { lat, lng: long },
               name,
               address: { street_address: streetName, postal_code: postalCode, city},
@@ -84,7 +158,7 @@ export class DataService {
               tags
             });
             }
-            console.log(this.activityLocations);
+            console.log(this.activityMarkerInfo);
     });
   }
 
@@ -95,6 +169,8 @@ export class DataService {
         console.log("Events");
         console.log(this.events);
 
+        // clear old marker info on marker drag end
+        this.eventMarkerInfo.splice(0, this.eventMarkerInfo.length);
         // filter results and push selected data to additional array
         for (const event of this.events) {
         const { lat, lon } = event.location ?? {};
@@ -104,7 +180,7 @@ export class DataService {
         const url = event.info_url;
         const about = event.description.intro;
         const tags = event.tags.map(tag => tag.name);
-        this.eventLocations.push({
+        this.eventMarkerInfo.push({
           position: { lat, lng: lon },
           name,
           address: { street_address, postal_code, city: locality},
@@ -114,7 +190,7 @@ export class DataService {
           tags
         });
         }
-        console.log(this.eventLocations);
+        console.log(this.eventMarkerInfo);
     });
   }
 
@@ -125,6 +201,8 @@ export class DataService {
         console.log("Places");
         console.log(this.places);
 
+        // clear old marker info on marker drag end
+        this.placeMarkerInfo.splice(0, this.placeMarkerInfo.length);
         // filter results and push selected data to additional array
         for (const place of this.places) {
             const { lat, lon } = place.location ?? {};
@@ -135,7 +213,7 @@ export class DataService {
             const url = place.info_url;
             const about = place.description.intro;
             const tags = place.tags.map(tag => tag.name);
-            this.placeLocations.push({
+            this.placeMarkerInfo.push({
               position: { lat, lng: lon },
               name,
               address: { street_address, postal_code, city: locality},
@@ -145,8 +223,12 @@ export class DataService {
               tags
             });
             }
-            console.log(this.placeLocations);
+            console.log(this.placeMarkerInfo);
     });
+  }
+
+  zoomIn() {
+    if (this.zoom < this.options.maxZoom) this.zoom++;
   }
 
 }

@@ -24,9 +24,8 @@ services:
         build: .
         ports:
             - '7266:7266'
-            - '5121:5121'
         environment:
-            DB_HOST: db
+            PGHOST: db
             JWT_SECRET: aGVsbG8gd29ybGQ= # Development (not very secret) secret
         depends_on:
             - db

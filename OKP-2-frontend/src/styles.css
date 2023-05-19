@@ -2,15 +2,6 @@ body {
   margin: 0;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
-.header-container {
-  background-color: #4581b6;
-  color: white;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  justify-content: space-between;
-}
 
 h2,
 h3,
@@ -22,13 +13,6 @@ google-map {
   width: 100%;
   margin: 0;
   padding: 0;
-}
-
-.footer-bar {
-  background-color: #4581b6;
-  color: white;
-  display: flex;
-  font-weight: lighter;
 }
 
 table {
@@ -47,4 +31,8 @@ th {
 }
 .frame {
   margin: 1rem;
+}
+
+.pac-container {
+  z-index: 9999!important;
 }

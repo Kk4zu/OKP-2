@@ -9,7 +9,7 @@ CREATE TABLE "public"."users" (
 /* ************* Favorites ************* */
 CREATE TABLE "public"."favorites" (
     "user" character varying(16) NOT NULL,
-    "id" character varying(32) NOT NULL,
+    "id" character varying(64) NOT NULL,
     "type" character varying(16) NOT NULL
 ) WITH (oids = false);
 
